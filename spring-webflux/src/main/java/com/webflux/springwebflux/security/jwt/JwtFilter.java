@@ -21,12 +21,12 @@ public class JwtFilter implements WebFilter {
         String path = request.getPath().value();
         if(path.contains("auth"))
             return chain.filter(exchange);
-        String auht = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        if(auht == null)
+        String auth = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+        if(auth == null)
             return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "no token was found"));
-        if(!auht.startsWith("Bearer "))
+        if(!auth.startsWith("Bearer "))
             return Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "invalid authorization"));
-        String token = auht.replace("Bearer ", "");
+        String token = auth.replace("Bearer ", "");
         exchange.getAttributes().put("token", token);
         return chain.filter(exchange);
     }

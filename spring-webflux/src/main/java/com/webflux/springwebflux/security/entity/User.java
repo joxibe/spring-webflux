@@ -1,5 +1,6 @@
 package com.webflux.springwebflux.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class User implements UserDetails {
 
     private int id;
     private String username;
+    @JsonIgnore //no muestra el password
     private String password;
     private String email;
     private String roles;

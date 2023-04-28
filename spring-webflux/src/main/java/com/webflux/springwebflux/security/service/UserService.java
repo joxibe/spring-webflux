@@ -38,11 +38,11 @@ public class UserService {
                 .username(createUserDto.getUsername())
                 .email(createUserDto.getEmail())
                 .password(passwordEncoder.encode(createUserDto.getPassword()))
-                .roles(Role.ROLE_ADMIN.name() + ", " + Role.ROLE_USER.name())
+                .roles(Role.ROLE_USER.name()) //quitamos Role.ROLE_ADMIN.name() + ", " +  para que el usuario que se cree solo tenga el rol de user
                 .build();
 
         Mono<Boolean> userExists = userRepository
-                .findByUsernameOrEmail(user.getUsername(), user.getEmail()).hasElement();
+                .findByUsernameOrEmail(user.getUsername(), user.getEmail()).hasElement(); //porque es un booleano
         return userExists
                 .flatMap(exists -> exists ?
                         Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "username or email already in use"))

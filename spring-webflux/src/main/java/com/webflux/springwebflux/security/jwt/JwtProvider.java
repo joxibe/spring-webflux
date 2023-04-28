@@ -35,7 +35,7 @@ public class JwtProvider {
     public Claims getClaims(String token){
         return Jwts.parserBuilder().setSigningKey(getKey(secret))
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 
@@ -43,7 +43,7 @@ public class JwtProvider {
     public String getSubject(String token){
         return Jwts.parserBuilder().setSigningKey(getKey(secret))
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
@@ -53,7 +53,7 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(getKey(secret))
                     .build()
-                    .parseClaimsJwt(token)
+                    .parseClaimsJws(token)
                     .getBody(); //si no lanza una excepcion el token esta bien
             return true;
         } catch (ExpiredJwtException e) {
@@ -73,7 +73,7 @@ public class JwtProvider {
     //ciframos el password
     private Key getKey(String secret){
         //convertimos en array de bytes
-        byte[] secretBytes = Decoders.BASE64.decode(secret);
+        byte[] secretBytes = Decoders.BASE64URL.decode(secret);
         return Keys.hmacShaKeyFor(secretBytes);
     }
 }
